@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Untitled Document</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Style-Type" content="text/css">
     <meta http-equiv="Content-Script-Type" content="text/javascript">
     <style type="text/css">
@@ -12,6 +12,7 @@
 
         .ajamWrapper {
             width: 600px;
+            margin: 0 auto;
         }
 
         .ajamDashBord {
@@ -25,6 +26,8 @@
 
         .score h3 {
             display: inline;
+            background-color: black;
+            color: white;
         }
 
         .fireworks {
@@ -49,9 +52,14 @@
         var activeElement;
         var popAjam;
         var mazeSize = 0;
+        var popText = "You are awarded 'Bir-Bikrom' with the score ...";
 
         var endGame = function() {
             clearInterval(popAjam);
+            var r = confirm(popText + '\n\n' + parseInt($("#ajamScore h3").text()) + '\n\n' + 'Do you want to continue?');
+            if (r) {
+                initCanvas();
+            }
         };
 
         var showFireworks = function() {
@@ -63,15 +71,27 @@
 
         var smashAjam = function(e) {
             var currentScore = parseInt($("#ajamScore h3").text());
-            $('embed').remove();
-            $('body').append('<embed src="Voice_002.wav" autostart="true" hidden="true" loop="false" />');
+
             if ($(e).attr('src') == ajamArray[1]) {
                 $(e).attr('src', ajamArray[2]);
                 $("#ajamScore h3").text(currentScore + 1000);
+
+                $('embed').remove();
+                $('body').append('<embed src="Voice_002.wav" autostart="true" hidden="true" loop="false" />');
             } else if ($(e).attr('src') == ajamArray[2]) {
                 showFireworks();
                 $(e).attr('src', ajamArray[3]);
                 $("#ajamScore h3").text(currentScore + 2000);
+
+                $('embed').remove();
+                $('body').append('<embed src="Voice_002.wav" autostart="true" hidden="true" loop="false" />');
+            }
+            var t = $("#ajamScore h3").text().length;
+            console.log(t);
+            if (t < 10) {
+                for (var i = t; i <= 10; i++)
+                    $("#ajamScore h3").text("0" + $("#ajamScore h3").text());
+
             }
         };
         var showAjam = function() {
@@ -115,14 +135,16 @@
             }
             tab.appendChild(tbo);
             $("#ajamTable").html(tab);
+
+            $("#ajamScore h3").text('0000000000');
+            popAjam = setInterval(function() {
+                showAjam()
+            }, 1500);
         };
 
         $(document).ready(function () {
             document.body.style.cursor = 'url("buckle_shoe.png"), auto';
             initCanvas();
-            popAjam = setInterval(function() {
-                showAjam()
-            }, 1500);
         });
     </script>
 </head>
@@ -133,15 +155,21 @@
         <div class="score" id="ajamScore">
             <span>Your score: </span>
 
-            <h3>0</h3>
+            <h3>000000</h3>
         </div>
         <div class="fireworks" id="fireworks">
             <!--<img src='fireworks.gif' width='50' height='50'/>-->
         </div>
     </div>
     <div id="ajamTable" class="goAjam"></div>
-</div>
 
+    <div class="thanks">
+        <br/>
+        <br/>
+        <i>'শাহবাগ/প্রজন্ম চত্তরের' যুদ্ধাপরাধ-বিরোধী আন্দোলকারীদের সঙ্গে আমরা (নরওয়েতে বসবাসরত সকল বাংলাদেশী) একাত্ততা
+            প্রকাশ করছি।</i>
+    </div>
+</div>
 
 </body>
 </html>
