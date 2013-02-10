@@ -1,93 +1,93 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Untitled Document</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<style type="text/css">
-.mytable {
+    <title>Untitled Document</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <style type="text/css">
+        .goAjam{
 
-border-collapse:collapse;
-width:200px;
-}
-.mytable td{
-background:#cccccc;
-border:0px solid #000000;
-}
-</style>
+            border-collapse: collapse;
+            width: 200px;
+        }
+        .goAjam{
+            width: 600px;
+        }
+        .goAjam td {
+            background: #cccccc;
+            border: 1px solid #000000;
+            text-align: center;
+        }
+    </style>
 
-<script type="text/javascript">
-function change(myid)
-  {
-  changeImg=document.getElementById(myid);
-  changeImg.src=vortaPicture;
-  }
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 
-function timeout_trigger()
-  {
-  
-   document.getElementById('timeout_text').innerHTML = 'Game over.(timeout triggered)';
-  }
+    <script type="text/javascript">
 
-onload=function(){
+        function change(myid) {
+            changeImg = document.getElementById(myid);
+            changeImg.src = vortaPicture;
+        }
 
-//define timeout
-timeout = setTimeout('timeout_trigger()', 3000);
+        function timeout_trigger() {
 
-//define picture
-picture='azam.jpg';
-vortaPicture='dead.jpg';
+            document.getElementById('timeout_text').innerHTML = 'Game over.(timeout triggered)';
+        }
 
-//define cursor image
-document.body.style.cursor='url("buckle_shoe.png"), auto';
 
-//generate 10x10 table
-var nrCols=10;
-var maxRows=10;
-var nrRows=maxRows;
-while(nrRows>maxRows){
-nrRows=Number(prompt('How many rows? Maximum '+maxRows+' allowed.',''));
-}
-var root=document.getElementById('mydiv');
-var tab=document.createElement('table');
-//picture='http://newagebd.com/files/13_12_2011_____front____02_157275069.jpg';
-//vortaPicture='http://rlv.zcache.co.uk/isapi/designall.dll?action=realview&pdt=zazzle_coaster&pending=false&pid=174775616158898065&rvtype=product&view=angle0&max_dim=1024&bg=dddddd&square_it=true&draw_relative_size=true&style=sandstone&context=indiv&drawareaboundingbox=false&drawsafearea=false&view_auto=1.4';
-tab.className="mytable";
-tab.style.width='600px';
-tab.style.height=tab.style.width;
-var tbo=document.createElement('tbody');
-var row, cell;
-for(var i=0;i<nrRows;i++){
-	row=document.createElement('tr');
-	for(var j=0;j<nrCols;j++){
-		cell=document.createElement('td');
-		//cell.appendChild(document.createTextNode(i+' '+j))               
-		row.appendChild(cell);
-                timg = document.createElement('img');
-                var mystr = i+'_'+j;
-                //document.write(myst);
-                timg.setAttribute('id',mystr);
-                timg.setAttribute('src',picture);
-                timg.setAttribute('width','60pc');
-                timg.setAttribute('onclick','change(\''+mystr+'\')');
-                cell.appendChild(timg);
-	}
-	tbo.appendChild(row);
-}
-tab.appendChild(tbo);
-root.appendChild(tab);
-}
-//document.write(document.getElementById('0_0'));
-</script>
+
+
+        var ajamArray = new Array('dirty_dog.jpg', 'azam1.jpg', 'azam2.jpg', 'azam3.jpg');
+        var nrCols = 5;
+        var maxRows = 5;
+        var nrRows = maxRows;
+
+        var showAjam = function(){
+
+        };
+
+        var initCanvas = function () {
+            var row, cell;
+            var tab = document.createElement('table');
+            var tbo = document.createElement('tbody');
+
+            for (var i = 0; i < nrRows; i++) {
+                row = document.createElement('tr');
+                for (var j = 0; j < nrCols; j++) {
+                    cell = document.createElement('td');
+                    row.appendChild(cell);
+                    var tImg = document.createElement('img');
+                    var imgId = i + '_' + j;
+                    //document.write(myst);
+                    tImg.setAttribute('id', imgId);
+                    tImg.setAttribute('src', ajamArray[0]);
+                    tImg.setAttribute('width', '90%');
+
+                    tImg.setAttribute('onclick', 'change(\'' + imgId + '\')');
+                    cell.appendChild(tImg);
+                }
+                tbo.appendChild(row);
+            }
+            tab.appendChild(tbo);
+            $("#ajamTable").html(tab);
+        };
+
+        $(document).ready(function () {
+            document.body.style.cursor = 'url("buckle_shoe.png"), auto';
+            initCanvas();
+        });
+    </script>
 </head>
-  <script type="text/javascript">
-    timg= document.getElementById('0_0');
-    timg.src='http://newagebd.com/files/13_12_2011_____front____02_157275069.jpg';
-  </script>
+<!--<script type="text/javascript">-->
+<!--timg = document.getElementById('0_0');-->
+<!--timg.src = 'http://newagebd.com/files/13_12_2011_____front____02_157275069.jpg';-->
+<!--</script>-->
 
 <body>
-<div id="mydiv"></div>
-<p id ='timeout_text'> this is first message </p>
+
+<div id="ajamTable" class="goAjam"></div>
+
+<p id='timeout_text'> this is first message </p>
 </body>
 </html>
