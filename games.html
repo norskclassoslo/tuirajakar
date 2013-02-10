@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<style type="text/css">
+.mytable {
+
+border-collapse:collapse;
+width:200px;
+}
+.mytable td{
+background:#cccccc;
+border:0px solid #000000;
+}
+</style>
+
+<script type="text/javascript">
+function change(myid)
+  {
+  changeImg=document.getElementById(myid);
+  changeImg.src=vortaPicture;
+  }
+
+function timeout_trigger()
+  {
+  
+   document.getElementById('timeout_text').innerHTML = 'Game over.(timeout triggered)';
+  }
+
+onload=function(){
+
+//define timeout
+timeout = setTimeout('timeout_trigger()', 3000);
+
+//define picture
+picture='azam.jpg';
+vortaPicture='dead.jpg';
+
+//define cursor image
+document.body.style.cursor='url("buckle_shoe.png"), auto';
+
+//generate 10x10 table
+var nrCols=10;
+var maxRows=10;
+var nrRows=maxRows;
+while(nrRows>maxRows){
+nrRows=Number(prompt('How many rows? Maximum '+maxRows+' allowed.',''));
+}
+var root=document.getElementById('mydiv');
+var tab=document.createElement('table');
+//picture='http://newagebd.com/files/13_12_2011_____front____02_157275069.jpg';
+//vortaPicture='http://rlv.zcache.co.uk/isapi/designall.dll?action=realview&pdt=zazzle_coaster&pending=false&pid=174775616158898065&rvtype=product&view=angle0&max_dim=1024&bg=dddddd&square_it=true&draw_relative_size=true&style=sandstone&context=indiv&drawareaboundingbox=false&drawsafearea=false&view_auto=1.4';
+tab.className="mytable";
+tab.style.width='600px';
+tab.style.height=tab.style.width;
+var tbo=document.createElement('tbody');
+var row, cell;
+for(var i=0;i<nrRows;i++){
+	row=document.createElement('tr');
+	for(var j=0;j<nrCols;j++){
+		cell=document.createElement('td');
+		//cell.appendChild(document.createTextNode(i+' '+j))               
+		row.appendChild(cell);
+                timg = document.createElement('img');
+                var mystr = i+'_'+j;
+                //document.write(myst);
+                timg.setAttribute('id',mystr);
+                timg.setAttribute('src',picture);
+                timg.setAttribute('width','60pc');
+                timg.setAttribute('onclick','change(\''+mystr+'\')');
+                cell.appendChild(timg);
+	}
+	tbo.appendChild(row);
+}
+tab.appendChild(tbo);
+root.appendChild(tab);
+}
+//document.write(document.getElementById('0_0'));
+</script>
+</head>
+  <script type="text/javascript">
+    timg= document.getElementById('0_0');
+    timg.src='http://newagebd.com/files/13_12_2011_____front____02_157275069.jpg';
+  </script>
+
+<body>
+<div id="mydiv"></div>
+<p id ='timeout_text'> this is first message </p>
+</body>
+</html>
