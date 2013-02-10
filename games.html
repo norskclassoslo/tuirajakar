@@ -6,14 +6,31 @@
     <meta http-equiv="Content-Style-Type" content="text/css">
     <meta http-equiv="Content-Script-Type" content="text/javascript">
     <style type="text/css">
-        .goAjam{
-
+        .goAjam {
             border-collapse: collapse;
-            width: 200px;
         }
-        .goAjam{
+
+        .ajamWrapper {
             width: 600px;
         }
+
+        .ajamDashBord {
+            overflow: hidden;
+        }
+
+        .score {
+            float: left;
+            height: 50px;
+        }
+
+        .score h3 {
+            display: inline;
+        }
+
+        .fireworks {
+            float: right;
+        }
+
         .goAjam td {
             background: #cccccc;
             border: 1px solid #000000;
@@ -24,34 +41,61 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 
     <script type="text/javascript">
-
-        function change(myid) {
-            changeImg = document.getElementById(myid);
-            changeImg.src = vortaPicture;
-        }
-
-        function timeout_trigger() {
-
-            document.getElementById('timeout_text').innerHTML = 'Game over.(timeout triggered)';
-        }
-
-
-
-
-        var ajamArray = new Array('dirty_dog.jpg', 'azam1.jpg', 'azam2.jpg', 'azam3.jpg');
+        var ajamArray = new Array('background.jpg', 'azam1.jpg', 'azam2.jpg', 'azam3.jpg', 'azam4.jpg');
+        var mazeArray = new Array();
         var nrCols = 5;
         var maxRows = 5;
         var nrRows = maxRows;
+        var activeElement;
+        var popAjam;
+        var mazeSize = 0;
 
-        var showAjam = function(){
+        var endGame = function() {
+            clearInterval(popAjam);
+        };
 
+        var showFireworks = function() {
+            $("#fireworks").html('<img src=\'fireworks.gif\' width=\'50\' height=\'50\'/>');
+            setTimeout(function() {
+                $("#fireworks").html('');
+            }, 1000);
+        };
+
+        var smashAjam = function(e) {
+            var currentScore = parseInt($("#ajamScore h3").text());
+            $('embed').remove();
+            $('body').append('<embed src="Voice_002.wav" autostart="true" hidden="true" loop="false" />');
+            if ($(e).attr('src') == ajamArray[1]) {
+                $(e).attr('src', ajamArray[2]);
+                $("#ajamScore h3").text(currentScore + 1000);
+            } else if ($(e).attr('src') == ajamArray[2]) {
+                showFireworks();
+                $(e).attr('src', ajamArray[3]);
+                $("#ajamScore h3").text(currentScore + 2000);
+            }
+        };
+        var showAjam = function() {
+            if ($('#' + activeElement).attr('src') == ajamArray[1])
+                $('#' + activeElement).attr('src', ajamArray[4]);
+            $('#' + activeElement).removeAttr('onclick');
+            if (mazeSize <= 0) {
+                endGame();
+                return;
+            }
+            var randomMaze = Math.round(Math.random() * (mazeSize - 1));
+
+            activeElement = mazeArray[randomMaze];
+            for (var i = randomMaze; i < mazeSize - 1; i++) {
+                mazeArray[i] = mazeArray[i + 1];
+            }
+            mazeSize--;
+            $('#' + activeElement).attr('src', ajamArray[1]);
         };
 
         var initCanvas = function () {
             var row, cell;
             var tab = document.createElement('table');
             var tbo = document.createElement('tbody');
-
             for (var i = 0; i < nrRows; i++) {
                 row = document.createElement('tr');
                 for (var j = 0; j < nrCols; j++) {
@@ -59,13 +103,13 @@
                     row.appendChild(cell);
                     var tImg = document.createElement('img');
                     var imgId = i + '_' + j;
-                    //document.write(myst);
                     tImg.setAttribute('id', imgId);
                     tImg.setAttribute('src', ajamArray[0]);
                     tImg.setAttribute('width', '90%');
 
-                    tImg.setAttribute('onclick', 'change(\'' + imgId + '\')');
+                    tImg.setAttribute('onclick', 'smashAjam(this)');
                     cell.appendChild(tImg);
+                    mazeArray[mazeSize++] = imgId;
                 }
                 tbo.appendChild(row);
             }
@@ -76,18 +120,28 @@
         $(document).ready(function () {
             document.body.style.cursor = 'url("buckle_shoe.png"), auto';
             initCanvas();
+            popAjam = setInterval(function() {
+                showAjam()
+            }, 1500);
         });
     </script>
 </head>
-<!--<script type="text/javascript">-->
-<!--timg = document.getElementById('0_0');-->
-<!--timg.src = 'http://newagebd.com/files/13_12_2011_____front____02_157275069.jpg';-->
-<!--</script>-->
 
 <body>
+<div class="ajamWrapper">
+    <div class="ajamDashBord">
+        <div class="score" id="ajamScore">
+            <span>Your score: </span>
 
-<div id="ajamTable" class="goAjam"></div>
+            <h3>0</h3>
+        </div>
+        <div class="fireworks" id="fireworks">
+            <!--<img src='fireworks.gif' width='50' height='50'/>-->
+        </div>
+    </div>
+    <div id="ajamTable" class="goAjam"></div>
+</div>
 
-<p id='timeout_text'> this is first message </p>
+
 </body>
 </html>
